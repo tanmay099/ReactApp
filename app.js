@@ -5,6 +5,7 @@
 var express = require('express'),
     mongoose = require('mongoose'),
     Doctor = require('./models/docter'),
+    Booking = require('./models/booking'),
     seedDB = require('./seed'),
     app = express(),
    router = express.Router()
@@ -21,7 +22,7 @@ var mongoDB = 'mongodb://tanmayS:tanmayS@ds157233.mlab.com:57233/doctor_demo';
 mongoose.connect(mongoDB, { useMongoClient: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-seedDB();
+//seedDB();
 
 
 
@@ -55,7 +56,18 @@ router.route('/doctors')
       
     });
   })
-
+router.route('/booking')
+  //retriving all the doctors from database
+  .get(function(req, res) {
+    //query for data base schema
+    Booking.find(function(err, doctors) {
+      if (err)
+        res.send(err);
+      //res json for the list of doctors from server.
+      res.json(doctors);
+      
+    });
+  })
 
 //starts the server and listens for requests
 app.listen(port, function() {

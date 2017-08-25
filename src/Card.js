@@ -1,47 +1,171 @@
 import React, {Component} from 'react';
-require('jquery');
-var TimekitBooking = require('timekit-booking');
 
-var widget = new TimekitBooking();
+import axios from 'axios';
+require('jquery');
+var moment = require('moment');
+
 
 
 
 
 class ReplyForm extends React.Component {
+     constructor(props){
+          super(props);
+     this.state = {
+          data: [],
 
+     errorInput:''
+     };
+      this.submitStepSignupForm = this.submitStepSignupForm.bind(this);
+      this.appendColumn = this.appendColumn.bind(this);
+     //  this.editColumn = this.editColumn.bind(this);
+}    componentDidMount() {
+    axios.get("http://localhost:3001/api/booking")
+      .then(res => {
+        this.setState({ data: res.data });
 
- renderwidget(){
-    widget.init({
-        name:     'Doc Brown',
-        email:    'marty.mcfly@timekit.io',
-        apiToken: 'XT1JO879JF1qUXXzmETD5ucgxaDwsFsd',
-        calendar: '22f86f0c-ee80-470c-95e8-dadd9d05edd2',
-        avatar:   '../misc/avatar-doc.jpg',
-        app:      'back-to-the-future',
-        bookingGraph: 'confirm_decline',
-        bookingFields: {
-          'phone': {
-            enabled: true
-          }
-        },
-        localization: {
-          timeDateFormat: '24h-dmy-mon'
-        },
-        callbacks: {
-          createEventSuccessful: function (data) { console.log('createEventSuccessful deprecated', data) },
-          createBookingSuccessful: function (data) { console.log('createBookingSuccessful', data) }
-        }
-      })}   
-
-
-  render(){
-    return (
-
-       <div id="bookingjs" className="card">{this.renderwidget()}</div>
-
-    )
+      })
+      .catch(error =>{console.log("error")});
   }
+
+     submitStepSignupForm(id,value){
+          console.log(this.props,'signup4');
+            let newArray = this.state.data.slice();
+            newArray.push({'id':id,'value':value});
+          this.setState({col : newArray});
+     }
+
+     // append column to the HTML table
+      appendColumn() {
+               let obj =  this.state.data.map((p) => {
+                    let size = Object.keys(p).length;
+                    p[size+1] = '-';
+                    return p;
+               });
+               this.setState({data:obj});
+           }
+     // edit Column
+      editColumn(p,k,e) {
+         let inputValue = e.target.innerText;
+           let obj = p.p;
+          let objId = obj.id;
+          let position = k.k;
+          let values = Object.values(obj);
+          if(values.indexOf(inputValue) == -1){
+               obj[position] = inputValue;
+               let stateCopy = this.state.data;
+               stateCopy.map((object,index) =>{
+                    if(object.id == objId){
+                         object = obj[position];
+                    }
+               })
+               this.setState(stateCopy);
+               this.setState({errorInput:''});
+               console.log(stateCopy,'stateCopystateCopy');
+          }else{
+               this.setState({errorInput:'This period is also available in your list'});
+               return false;
+          }
+           }
+
+     render(){
+          let tableStyle = {
+               align:"center"
+          };
+          let list = this.state.data.map(p =>{
+               return (
+                    <tr className="grey2" key={p.id}>
+                         {Object.keys(p).filter(k => k !== 'id').map(k => {
+                               return (<td className="grey1" key={p.id+''+k}><a href="#"
+                              value={k} >{p[k]}</a></td>);
+                         })}
+                    </tr>
+               );
+          });
+          return (
+               <fieldset className="step-4">
+                    <div className="heading">
+                         <h3>Book your Appointment</h3>
+                         
+                    </div>
+                    <div className="schedule padd-lr">
+                         <table cellSpacing="3" id="mytable" style={tableStyle}>
+                              <tbody>{list}</tbody>
+                         </table>
+
+                    </div>
+
+                    
+               </fieldset>
+          );
+     }
 }
+
+// var ReplyForm = React.createClass({
+//     render: function() {
+//         var names = ['Jake', 'Jon', 'Thruster', 'Jon', 'Thruster', 'Jon', 'Thruster', 'Jon', 'Thruster', 'Thruster', 'Jon', 'Thruster'];
+//         return (
+//             <ul>
+//                 {names.map(function(name, index){
+//                     return <li key={ index }>{moment().fromNow()}</li>;
+//                   })}
+//             </ul>
+//         )
+//     }
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+// var names = ['Jake', 'Jon', 'Thruster', 'Jon', 'Thruster', 'Jon', 'Thruster', 'Jon', 'Thruster', 'Thruster', 'Jon', 'Thruster'];
+
+// class ReplyForm extends React.Component {
+
+//  constructor(props) {
+//   super(props);
+//   // State
+//   this.state = {
+//     listOfAlarms: [15,, 15, 15, 'Thruster', 'Jon', 'Thruster', 'Jon', 'Thruster', 'Thruster', 'Jon', 'Thruster']
+//   }
+// }
+
+
+
+
+
+
+
+
+//  renderwidget(){
+//   var timestring1 = "2013-05-09T00:00:00Z";
+// var timestring2 = "2013-05-09T02:00:00Z";
+// var startdate = moment(timestring1);
+// var expected_enddate = moment(timestring2);
+// var returned_endate = moment(startdate).add(15, 'minutes');
+// }
+ 
+// render(){
+// return(
+//       <ul>
+//           {names.map(function(name, index){
+//                     return <li key={ index }> {moment().format('LT')}</li>;
+//         })}
+//             </ul>
+
+//    )
+
+    
+//   }
+// }
 
 
 export default class Card extends Component {
