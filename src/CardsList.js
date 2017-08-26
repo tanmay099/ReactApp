@@ -1,9 +1,6 @@
 import React, {Component} from 'react';
 import Card from './Card';
 import axios from 'axios';
-import AddUserForm from './UserForm'
-
-    
 
 
 
@@ -29,7 +26,8 @@ export default class CardsList extends Component {
 
   
     render() {
-        return <div className="cards-list">
+        return (
+        <div className="cards-list">
             {this.state.cards.map((card, i)=>{
                 return <Card
                     key={card.id}
@@ -37,6 +35,8 @@ export default class CardsList extends Component {
                   />
             })}
         </div>
+)
+
     }
 }
 

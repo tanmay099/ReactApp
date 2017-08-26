@@ -1,25 +1,52 @@
 import React, {Component} from 'react';
 
+import Form from './UserForm';
+
 import axios from 'axios';
 require('jquery');
-var moment = require('moment');
 
 
 
 
 
 class ReplyForm extends React.Component {
-     constructor(props){
-          super(props);
-     this.state = {
-          data: [],
 
+ constructor(props){
+          super(props);
+           
+     this.state = {
+          time: '',
+          data: [],
+          //data is of following type in databases
+          //   {id:1,1:'',2:'morning',3:'afternoon',4:'evening',5:'night'},
+          // {id:2,1:moment().format("MMM Do YY dddd"),2:'10:00AM',3:'2:00PM',4:'4:00',5:'7:00'},
+          // {id:3,1:'',2:'10:30AM',3:'2:30PM',4:'4:30PM',5:'7:30PM'},
+          // {id:4,1:'',2:'11:00',3:'3:00',4:'5:00PM',5:'8:00'},
+          // {id:5,1:'',2:'11:30',3:'3:30PM',4:'5:30PM',5:'8:30PM'}
+showReply: false,
      errorInput:''
      };
+      this.handleTextChange = this.handleTextChange.bind(this);
       this.submitStepSignupForm = this.submitStepSignupForm.bind(this);
       this.appendColumn = this.appendColumn.bind(this);
-     //  this.editColumn = this.editColumn.bind(this);
-}    componentDidMount() {
+   
+}    
+
+ onClick(e){
+    e.preventDefault();
+    this.setState({showReply: !this.state.showReply})
+  }
+
+
+  handleTextChange(e) {
+    this.setState({ date: e.target.value });
+    console.log(this.state.date);
+  }
+
+
+
+
+componentDidMount() {
     axios.get("http://localhost:3001/api/booking")
       .then(res => {
         this.setState({ data: res.data });
@@ -44,48 +71,27 @@ class ReplyForm extends React.Component {
                });
                this.setState({data:obj});
            }
-     // edit Column
-      editColumn(p,k,e) {
-         let inputValue = e.target.innerText;
-           let obj = p.p;
-          let objId = obj.id;
-          let position = k.k;
-          let values = Object.values(obj);
-          if(values.indexOf(inputValue) == -1){
-               obj[position] = inputValue;
-               let stateCopy = this.state.data;
-               stateCopy.map((object,index) =>{
-                    if(object.id == objId){
-                         object = obj[position];
-                    }
-               })
-               this.setState(stateCopy);
-               this.setState({errorInput:''});
-               console.log(stateCopy,'stateCopystateCopy');
-          }else{
-               this.setState({errorInput:'This period is also available in your list'});
-               return false;
-          }
-           }
-
+ 
      render(){
           let tableStyle = {
                align:"center"
           };
           let list = this.state.data.map(p =>{
                return (
-                    <tr className="grey2" key={p.id}>
+                    <tr  key={p.id}>
                          {Object.keys(p).filter(k => k !== 'id').map(k => {
-                               return (<td className="grey1" key={p.id+''+k}><a href="#"
-                              value={k} >{p[k]}</a></td>);
+                               return (<td id="time"value={this.state.time} className="grey1" key={p.id+''+k}><button   onClick={this.onClick.bind(this)
+                               } className="button">{p[k]}</button></td>);
                          })}
                     </tr>
+          
                );
           });
           return (
+          <div>
                <fieldset className="step-4">
                     <div className="heading">
-                         <h3>Book your Appointment</h3>
+                         <h3>Book your Appointment </h3>
                          
                     </div>
                     <div className="schedule padd-lr">
@@ -94,25 +100,13 @@ class ReplyForm extends React.Component {
                          </table>
 
                     </div>
-
-                    
-               </fieldset>
+         </fieldset>
+ {this.state.showReply && <Form/>}
+</div>
           );
      }
 }
 
-// var ReplyForm = React.createClass({
-//     render: function() {
-//         var names = ['Jake', 'Jon', 'Thruster', 'Jon', 'Thruster', 'Jon', 'Thruster', 'Jon', 'Thruster', 'Thruster', 'Jon', 'Thruster'];
-//         return (
-//             <ul>
-//                 {names.map(function(name, index){
-//                     return <li key={ index }>{moment().fromNow()}</li>;
-//                   })}
-//             </ul>
-//         )
-//     }
-// });
 
 
 
@@ -126,17 +120,7 @@ class ReplyForm extends React.Component {
 
 
 
-// var names = ['Jake', 'Jon', 'Thruster', 'Jon', 'Thruster', 'Jon', 'Thruster', 'Jon', 'Thruster', 'Thruster', 'Jon', 'Thruster'];
 
-// class ReplyForm extends React.Component {
-
-//  constructor(props) {
-//   super(props);
-//   // State
-//   this.state = {
-//     listOfAlarms: [15,, 15, 15, 'Thruster', 'Jon', 'Thruster', 'Jon', 'Thruster', 'Thruster', 'Jon', 'Thruster']
-//   }
-// }
 
 
 
@@ -210,7 +194,7 @@ export default class Card extends Component {
 </div>  
                     <div>
                      <button onClick={this.onClick.bind(this)} className="button">Book Appointment</button>
-                      {this.state.showReply && <ReplyForm/>}
+                       {this.state.showReply && <ReplyForm/>}
                      
                     </div>
              

@@ -8,6 +8,7 @@
     "express": "^4.15.4",
     "foreman": "^2.0.0",
     "marked": "^0.3.6",
+    "material-ui": "^0.19.0",
     "moment": "^2.18.1",
     "mongoose": "^4.11.7",
     "nodemon": "^1.11.0",
@@ -17,6 +18,7 @@
     "react-router": "^3.0.5",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.11",
+    "react-tap-event-plugin": "^2.0.1",
     "timekit-booking": "^1.18.1"
   },
   "scripts": {

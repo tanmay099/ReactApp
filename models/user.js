@@ -3,17 +3,9 @@
 var mongoose = require('mongoose');
 
 var UserSchema = new mongoose.Schema({
+name: String,
+email:  String
 
-username: String,
-password: String,
-email:  String,  
-Appointments: [
-{
-type: mongoose.Schema.Types.ObjectId,
-ref: "Appointments"
-}
-
-]
 
 });
 

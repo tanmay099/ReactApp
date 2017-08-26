@@ -10,10 +10,10 @@ var doctorSchema = new mongoose.Schema({
  ocupation: String,
  location:  String,
 //all feedback to a perticullar doctor are stored as objectid array of each feedback
- feedback: [
+ UserAppointment: [
 {
    type: mongoose.Schema.Types.ObjectId,
-   ref: "Feedback"
+   ref: "User"
 
 
 
