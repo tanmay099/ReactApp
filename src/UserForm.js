@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 class Form extends Component {
+  
+
   constructor(props) {
     super(props);
     this.state = { name: '', email: '' };
@@ -23,7 +25,7 @@ class Form extends Component {
       return;
     }
  
-    this.setState({ email: '', name: '' });
+    this.setState({ email:'', name:''});
        var apiBaseUrl = "http://localhost:3001/api";
     console.log("values",this.state.name,this.state.email);
     //To be done:check for empty values before hitting submit

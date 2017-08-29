@@ -48,30 +48,7 @@ var data =[
 ]
 
 
-//var mongoDB = 'mongodb://<DBUSERNAME>:<DBPASSWORD>@ds019836.mlab.com:19836/doctor';
 
-// function seedDB(){
-
-    
-
-// console.log("1");
-
-// data.forEach(function(seed){
-
-// Booking.create(seed, function(err,data){
-// if(err){
-// console.log(err);
-
-// }else{
-// console.log("added");
-
-// }
-
-
-// }
-// );
-// });
-// }
 function seedDB(){
 
  data.forEach(function(seed){

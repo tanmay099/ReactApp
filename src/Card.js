@@ -17,6 +17,7 @@ class ReplyForm extends React.Component {
      this.state = {
           time: '',
           data: [],
+         // moment().format("MMM Do YY dddd") will return todays date from system time
           //data is of following type in databases
           //   {id:1,1:'',2:'morning',3:'afternoon',4:'evening',5:'night'},
           // {id:2,1:moment().format("MMM Do YY dddd"),2:'10:00AM',3:'2:00PM',4:'4:00',5:'7:00'},
